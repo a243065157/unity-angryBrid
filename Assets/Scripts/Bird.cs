@@ -12,8 +12,8 @@ public class Bird : MonoBehaviour
 {
     // 等待 发射前 发射后
     public BirdState state = BirdState.BeforeShoot;
-    public bool isMouseDown = false;
-
+    private bool isMouseDown = false;
+    public float maxDistance = 2.4f;
     // Start is called before the first frame update
     void Start()
     {
@@ -61,10 +61,22 @@ public class Bird : MonoBehaviour
     }
     private Vector3 GetMousePosition()
     {
+        Vector3 centerPosition = Slingshot.Instance.getCenterPosition();
         // 将鼠标坐标转换为世界坐标 这里要修改他的z值坐标
-        Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        Vector3 mp = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         // 因为这是2d游戏，不要修改z坐标
-        mousePosition.z = 0;
-        return mousePosition;
+        mp.z = 0;
+
+        Vector3 mouseDir = mp - centerPosition;
+        float distance = mouseDir.magnitude;
+
+        if (distance > maxDistance)
+        {
+            // 限制最大拖动距离
+            // dir就是方向 = 归一化向量
+            Vector3 dir = mouseDir.normalized;
+            mp = centerPosition + dir * maxDistance;
+        }
+        return mp;
     }
 }

@@ -63,4 +63,9 @@ public class Slingshot : MonoBehaviour
         rightLineRenderer.SetPosition(0, birdPosition);
         rightLineRenderer.SetPosition(1, rightPoint.position);
     }
+
+    public Vector3  getCenterPosition()
+    {
+        return centerPoint.position;
+    }
 }
