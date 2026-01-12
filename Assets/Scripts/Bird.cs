@@ -41,6 +41,7 @@ public class Bird : MonoBehaviour
         if (state == BirdState.BeforeShoot)
         {
             isMouseDown = true;
+            Slingshot.Instance.StartDraw(this.transform);
         }
     }
     private void OnMouseUp()
@@ -48,6 +49,7 @@ public class Bird : MonoBehaviour
         if (state == BirdState.BeforeShoot)
         {
             isMouseDown = false;
+            Slingshot.Instance.EndDraw();
         }
     }
     private void MoveControl()

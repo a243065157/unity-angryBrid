@@ -8,9 +8,9 @@ public class Slingshot : MonoBehaviour
     public static Slingshot Instance { get; private set;}
     private LineRenderer leftLineRenderer;
     private LineRenderer rightLineRenderer;
-    private Transform LeftPoint;
-    private Transform RightPoint;
-    private Transform CenterPoint;
+    private Transform leftPoint;
+    private Transform rightPoint;
+    private Transform centerPoint;
     private bool isDrawing = false;
     private Transform BirdTransform;
 
@@ -22,8 +22,10 @@ public class Slingshot : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        leftLineRenderer = transform.Find("LeftLineRenderer").getComponent<LineRenderer>();
-        rightLineRenderer = transform.Find("RightLineRenderer").getComponent<LineRenderer>();
+        var t = transform.Find("LeftLineRenderer");
+        Debug.Log("LeftLineRenderer find = " + (t ? t.name : "NULL"));
+        leftLineRenderer = transform.Find("LeftLineRenderer").GetComponent<LineRenderer>();
+        rightLineRenderer = transform.Find("RightLineRenderer").GetComponent<LineRenderer>();
         leftPoint = transform.Find("LeftPoint");
         rightPoint = transform.Find("RightPoint");
         centerPoint = transform.Find("CenterPoint");
@@ -50,12 +52,15 @@ public class Slingshot : MonoBehaviour
     }
     public void Draw()
     {
+        Vector3 birdPosition = BirdTransform.position;
+        // 绘制从弹弓到小鸟的后背的线
+        birdPosition = (birdPosition - centerPoint.position).normalized * 0.4f + birdPosition;
         // 绘制左线
         // 第一个参数index，代表设置的位置
-        leftLineRenderer.SetPosition(0, BirdTransform.position);
+        leftLineRenderer.SetPosition(0, birdPosition);
         leftLineRenderer.SetPosition(1, leftPoint.position);
         // 绘制右线
-        rightLineRenderer.SetPosition(0, BirdTransform.position);
+        rightLineRenderer.SetPosition(0, birdPosition);
         rightLineRenderer.SetPosition(1, rightPoint.position);
     }
 }
