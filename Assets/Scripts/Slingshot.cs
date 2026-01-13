@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Slingshot : MonoBehaviour
 {
- // 单例模式 我还不知道有什么用
+ // 单例模式 让外部可以用这个类
     public static Slingshot Instance { get; private set;}
     private LineRenderer leftLineRenderer;
     private LineRenderer rightLineRenderer;
@@ -29,6 +29,7 @@ public class Slingshot : MonoBehaviour
         leftPoint = transform.Find("LeftPoint");
         rightPoint = transform.Find("RightPoint");
         centerPoint = transform.Find("CenterPoint");
+        hideLine();
     }
 
     // Update is called once per frame
@@ -44,10 +45,12 @@ public class Slingshot : MonoBehaviour
         isDrawing = true;
         // 这里用this的原因是他在这个方法里面定义了两个一模一样的变量名，this区分开是公共的还是方法里面自带的
         this.BirdTransform = BirdTransform;
+        showLine();
     }
     public void EndDraw()
     {
         isDrawing = false;
+        hideLine();
 
     }
     public void Draw()
@@ -64,8 +67,20 @@ public class Slingshot : MonoBehaviour
         rightLineRenderer.SetPosition(1, rightPoint.position);
     }
 
-    public Vector3  getCenterPosition()
+    public Vector3 getCenterPosition()
     {
         return centerPoint.position;
+    }
+
+    // 隐藏 显示皮筋
+    public void hideLine()
+    {
+        leftLineRenderer.enabled = false;
+        rightLineRenderer.enabled = false;
+    }
+    public void showLine()
+    {
+        leftLineRenderer.enabled = true;
+        rightLineRenderer.enabled = true;
     }
 }
