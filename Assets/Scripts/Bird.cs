@@ -15,9 +15,13 @@ public class Bird : MonoBehaviour
     private bool isMouseDown = false;
     public float maxDistance = 2.4f;
     // Start is called before the first frame update
+    // 飞行速度
+    public float flySpeed = 13;
+    private Rigidbody2D rgd;
     void Start()
     {
-
+        rgd = GetComponent<Rigidbody2D>();
+        rgd.bodyType = RigidbodyType2D.Static;
     }
 
     // Update is called once per frame
@@ -50,6 +54,7 @@ public class Bird : MonoBehaviour
         {
             isMouseDown = false;
             Slingshot.Instance.EndDraw();
+            Fly();
         }
     }
     private void MoveControl()
@@ -79,4 +84,15 @@ public class Bird : MonoBehaviour
         }
         return mp;
     }
+    private void Fly ()
+    {
+        rgd.bodyType = RigidbodyType2D.Dynamic;
+        rgd.gravityScale = 1.5f;
+        // 控制元素旋转时候的阻力
+        rgd.angularDrag = 10;
+        // 方向*速度
+        rgd.velocity = (Slingshot.Instance.getCenterPosition() - transform.position).normalized * flySpeed;
+        this.state = BirdState.AfterShoot;
+    }
 }
+ 
